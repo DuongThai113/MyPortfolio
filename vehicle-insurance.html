@@ -1,0 +1,234 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Vehicle Insurance Data Analysis</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+
+  <style>
+    /* Full-width charts (pp1, pp2, pp3, pp4...) */
+    .chart-large { margin: 2rem 0; }
+    .chart-large img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    /* Typography helpers */
+    .meta-line { margin-top: 0.25rem; }
+    .section-title { margin-top: 1.5rem; }
+
+    /* ===== Left align blocks like your screenshots ===== */
+    .left-align { text-align: left !important; }
+    .left-align h4,
+    .left-align p,
+    .left-align li,
+    .left-align .reco-title { text-align: left !important; }
+
+    /* ===== Match the "bullet + bold lead + gray body" look ===== */
+    .bullet-block { margin-top: 0.75rem; }
+    .bullet-block h4 {
+      margin: 0 0 0.75rem 0;
+      font-weight: 700;
+    }
+    .bullet-block p.lead {
+      margin: 0 0 0.75rem 0;
+      color: #6b7280;
+    }
+
+    .bullet-block ul {
+      margin: 0 0 1rem 1.25rem; /* indent like screenshot */
+      padding-left: 0;
+    }
+    .bullet-block li {
+      margin: 0.6rem 0;
+      line-height: 1.6;
+    }
+
+    .bullet-block li .body {
+      color: #6b7280;
+      font-weight: 400;
+    }
+
+    .reco-title {
+      margin: 1.25rem 0 0.75rem 0;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .bullet-block li p {
+      margin: 0.5rem 0 0 0;
+      color: #6b7280;
+    }
+	/* ===== Project Overview text tuning ===== */
+.project-overview-text {
+  text-align: left;        /* canh trái */
+  line-height: 1.6;        /* giảm giãn dòng */
+  margin-top: 0.75rem;     /* giảm khoảng cách với tiêu đề */
+  margin-bottom: 0.75rem;  /* giảm khoảng cách dưới */
+  max-width: 900px;        /* tránh quá dài, giống report */
+}
+
+  </style>
+</head>
+
+<body class="is-preload">
+
+  <!-- Header -->
+  <section id="header">
+    <header>
+      <h1>Vehicle Insurance Data Analysis</h1>
+      <p>Vehicle Insurance Expansion Using Cross-Sell Data</p>
+    </header>
+  </section>
+
+  <!-- Main -->
+  <article class="wrapper style3">
+    <div class="container">
+
+      <header class="major">
+        <h2>Project Overview</h2>
+      </header>
+
+     <p class="project-overview-text">
+  A health insurance company in India is evaluating an expansion into vehicle insurance.
+  Using cross-sell data, this analysis quantifies demand, identifies high-value opportunities,
+  and translates insights into practical go-to-market recommendations.
+</p>
+
+
+      <p class="meta-line project-overview-text">
+        <strong>Data source:</strong>
+        <a href="https://www.kaggle.comspagle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction/data?select=train.csv"
+           target="_blank" rel="noopener noreferrer">
+          <span style="color: green;">Health Insurance Cross Sell Prediction</span>
+        </a>;
+        <strong>Tools:</strong> RStudio
+      </p>
+
+      <!-- Data Analysis -->
+      <h3 class="section-title">Data Analysis</h3>
+
+      <!-- 2 Main Questions (left aligned like screenshot) -->
+      <div class="bullet-block left-align">
+        <h4>Main Questions</h4>
+        <ul>
+          <li>
+            <span class="body">
+              Assess the market potential for vehicle insurance based on customer demand and premium distribution.
+            </span>
+          </li>
+          <li>
+            <span class="body">
+              Determine how to allocate marketing budget for fast growth—specifically which regions, sales channels,
+              and customer segments should be prioritized in the short term.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Results -->
+      <h3 class="section-title">Results</h3>
+
+      <div class="chart-large">
+        <img src="images/pp1.jpg" alt="Market Potential by Number of Customers" />
+      </div>
+      <div class="chart-large">
+        <img src="images/pp2.jpg" alt="Market Potential by Annual Premium" />
+      </div>
+      <div class="chart-large">
+        <img src="images/pp3.jpg" alt="Spotlight on Interest: Top Regions" />
+      </div>
+
+      <!-- Key insights (left aligned like screenshot) -->
+      <div class="bullet-block left-align">
+        <p class="lead">These charts highlight several key insights:</p>
+        <ul>
+          <li>
+            <strong>Large Untapped Opportunity:</strong>
+            <span class="body">
+              While current penetration in vehicle insurance is still modest, the data suggests meaningful upside by
+              capturing share from competitors—especially in regions with strong demand and premium potential.
+            </span>
+          </li>
+          <li>
+            <strong>Region 28 is the Growth Engine:</strong>
+            <span class="body">
+              Region 28 leads in interested customers and stands out with the highest premium contribution.
+              The large pool of uninterested customers also signals heavy competitive focus—making it the best target
+              for conversion campaigns and sales follow-up.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Additional charts -->
+      <div class="chart-large">
+        <img src="images/pp4.jpg" alt="Additional Insight Chart 4" />
+      </div>
+      <div class="chart-large">
+        <img src="images/pp5.jpg" alt="Additional Insight Chart 5" />
+      </div>
+      <div class="chart-large">
+        <img src="images/pp6.jpg" alt="Additional Insight Chart 6" />
+      </div>
+      <div class="chart-large">
+        <img src="images/pp7.jpg" alt="Additional Insight Chart 7" />
+      </div>
+
+      <!-- Recommendations (left aligned like screenshot) -->
+      <div class="bullet-block left-align">
+        <div class="reco-title">Recommendations:</div>
+        <ul>
+          <li>
+            <strong>Focus on Region 28:</strong>
+            <span class="body">
+              Run targeted regional campaigns and partner initiatives to strengthen presence where demand and premium
+              potential are highest.
+            </span>
+          </li>
+          <li>
+            <strong>Double Down on Key Channels:</strong>
+            <span class="body">
+              Maintain investment in the top-performing channels (26/124/122/152/154) to maximize reach and conversion efficiency.
+            </span>
+          </li>
+          <li>
+            <strong>Improve Sales Follow-up & Retention:</strong>
+            <span class="body">
+              Prioritize high-intent customers with structured follow-ups, tailored messaging, and stronger relationship management
+              to increase close rates and long-term value.
+            </span>
+          </li>
+          <li>
+            <strong>Convert the “Not Interested” Pool:</strong>
+            <span class="body">
+              In Region 28, deploy conversion playbooks (re-targeting, offers, and sales scripts) to win customers back from competitors.
+            </span>
+            <p>
+              With ~86.5k uninterested customers in Region 28, converting just 100 customers (~0.1%) is a realistic near-term goal
+              and would create measurable impact given current sales capacity.
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <ul class="actions">
+        <li><a href="index.html#portfolio" class="button">← Back to Portfolio</a></li>
+      </ul>
+
+    </div>
+  </article>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
