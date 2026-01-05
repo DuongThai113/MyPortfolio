@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Skinny Mixes Demand Forecasting</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+
+  <style>
+    
+    /* Full-width charts */
+    .chart-large { margin: 2rem 0; }
+   .chart-large img {
+  width: 55%;          /* ↓ nhỏ hơn 15% */
+  height: auto;
+  display: block;
+  margin: 0 auto;      /* canh giữa */
+  border-radius: 10px;
+}
+
+
+    /* Typography helpers */
+    .meta-line { margin-top: 0.25rem; }
+    .section-title { margin-top: 1.5rem; }
+
+    /* Left align blocks like the template */
+    .left-align { text-align: left !important; }
+    .left-align h4,
+    .left-align p,
+    .left-align li,
+    .left-align .reco-title { text-align: left !important; }
+
+    /* Bullet + bold lead + gray body look */
+    .bullet-block { margin-top: 0.75rem; }
+    .bullet-block h4 {
+      margin: 0 0 0.75rem 0;
+      font-weight: 700;
+    }
+    .bullet-block p.lead {
+      margin: 0 0 0.75rem 0;
+      color: #6b7280;
+    }
+
+    .bullet-block ul {
+      margin: 0 0 1rem 1.25rem;
+      padding-left: 0;
+    }
+    .bullet-block li {
+      margin: 0.6rem 0;
+      line-height: 1.45;
+    }
+
+    .bullet-block li .body {
+      color: #6b7280;
+      font-weight: 400;
+    }
+
+    /* Project Overview text tuning (same as template) */
+    .project-overview-text {
+      text-align: left;
+      line-height: 1.45;
+      margin-top: 0.5 rem;
+      margin-bottom: 0.5 rem;
+      max-width: 900px;
+    }
+/* Two charts same size (equal columns) */
+.chart-row{
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
+  gap: 12px;
+  margin: 2rem 0;
+  align-items: start;
+}
+
+/* Ảnh sẽ fit theo cột, không méo */
+.chart-row img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+/* =========================
+   Skinny Mixes – Compact Layout
+   Reduce vertical spacing
+   ========================= */
+
+/* 1. Giảm khoảng cách tiêu đề */
+.skinny-page h2,
+.skinny-page h3 {
+  margin-top: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+/* 2. Giảm khoảng cách đoạn văn */
+.skinny-page p {
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.55;
+}
+
+/* 3. Giảm khoảng cách bullet block */
+.skinny-page .bullet-block {
+  margin-top: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+/* 4. Giảm khoảng cách chart */
+.skinny-page .chart-large {
+  margin-top: 0.8rem;
+  margin-bottom: 1.1rem;
+}
+
+/* 5. Giảm khoảng cách caption / lead text */
+.skinny-page .bullet-block p.lead {
+  margin-bottom: 0.4rem;
+}
+
+/* 6. Giảm khoảng cách giữa sections */
+.skinny-page section,
+.skinny-page .section-title {
+  margin-bottom: 0.8rem;
+}
+
+  </style>
+</head>
+
+<body class="is-preload">
+
+  <!-- Header (match template style) -->
+  <section id="header">
+    <header>
+      <h1>Skinny Mixes Demand Forecasting</h1>
+    </header>
+  </section>
+
+  <!-- Main -->
+  <article class="wrapper style3 skinny-page">
+
+    <div class="container">
+
+      <!-- =====================
+           Project Overview
+           ===================== -->
+      <header class="major">
+        <h2>Project Overview</h2>
+      </header>
+
+      <p class="project-overview-text">
+        This project develops a demand forecasting framework for <strong>Skinny Mixes</strong> using weekly
+        order history. The analysis characterizes demand structure by examining long-run trend behavior,
+        year-over-year seasonality, SKU-level heterogeneity, and external explanatory signals (e.g., macroeconomic
+        variables and search interest). The objective is to produce decision-ready forecasts that support
+        inventory planning, production scheduling, and operational risk management under demand uncertainty.
+      </p>
+
+      <p class="meta-line project-overview-text">
+        <strong>Data source:</strong> Internal order history provided by FST Logistics Inc. (as of February 2024);
+        <strong>Tools:</strong> RStudio
+      </p>
+
+      <!-- =====================
+           Data Analysis
+           ===================== -->
+      <h3 class="section-title">Data Analysis</h3>
+
+      <div class="bullet-block left-align">
+        <h4>Main Questions</h4>
+        <ul>
+          <li>
+            <span class="body">
+              What underlying trends and seasonal patterns characterize demand for Skinny Mixes at both the aggregate
+              and SKU levels?
+            </span>
+          </li>
+          <li>
+            <span class="body">
+              How does demand variability differ across products, and what implications does this heterogeneity have
+              for forecast accuracy and inventory planning?
+            </span>
+          </li>
+          <li>
+            <span class="body">
+              To what extent can short-term demand be forecasted reliably given data volatility, SKU status changes,
+              and external explanatory factors?
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- =====================
+           Results
+           ===================== -->
+      <h3 class="section-title">Results</h3>
+
+      <!-- Seasonality -->
+      <div class="bullet-block left-align">
+        <p class="lead">Seasonality analysis:</p>
+        <ul>
+          <li>
+            <strong>Seasonality exists but is not stable year over year:</strong>
+            <span class="body">
+              Weekly demand shows recurring end-of-year peaks, but the magnitude and timing vary across 2022–2024.
+              This instability limits the effectiveness of purely seasonal models when historical depth is limited.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-large">
+        <img src="images/seasonality_by_year.png"  />
+      </div>
+
+      <!-- Decomposition -->
+      <div class="bullet-block left-align">
+        <p class="lead">Time-series decomposition:</p>
+        <ul>
+          <li>
+            <strong>Short-term volatility is driven by irregular spikes:</strong>
+            <span class="body">
+              Decomposition isolates a gradual upward trend, while the remainder component captures demand shocks and
+              abrupt spikes. These irregular events increase forecast uncertainty and motivate frequent model refresh.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-large">
+        <img src="images/decomposition_total_orders.png" />
+      </div>
+
+         
+
+      
+
+      <!-- Barnana comparison -->
+      <div class="bullet-block left-align">
+        <p class="lead">Comparative retailer context (Barnana vs. Skinny Mixes):</p>
+        <ul>
+          <li>
+            <strong>Forecast assumptions are not transferable across retailers:</strong>
+            <span class="body">
+              <em>Barnana</em> (a separate retail company, not affiliated with Skinny Mixes) exhibits sharper spikes and a less stable
+              baseline. This comparison reinforces that model choice, preprocessing, and validation must be tailored to
+              each business context.
+            </span>
+          </li>
+        </ul>
+      
+
+  <div class="chart-row">
+  <div class="chart-large">
+    <img src="images/skinny_mixes_sku_forecast.png"  />
+  </div>
+
+  <div class="chart-large">
+    <img src="images/barnana_weekly_demand.png"  />
+  </div>
+</div>
+
+
+
+      <!-- Product-specific patterns -->
+      <div class="bullet-block left-align">
+        <p class="lead">Product-specific demand patterns:</p>
+        <ul>
+          <li>
+            <strong>Seasonal SKUs require event-aware planning:</strong>
+            <span class="body">
+              Gingerbread Latte demand concentrates in narrow seasonal windows, while Coconut shows a comparatively stable
+              baseline with modest growth. These differences justify SKU-specific modeling and differentiated safety-stock policies.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+     <div class="chart-row">
+  <div class="chart-large">
+    <img src="images/gingerbread_latte_forecast.png" alt="Gingerbread Latte demand forecast" />
+  </div>
+
+  <div class="chart-large">
+    <img src="images/coconut_forecast.png" alt="Coconut demand forecast" />
+  </div>
+</div>
+
+      <!-- Explanatory variables -->
+      <div class="bullet-block left-align">
+        <p class="lead">External explanatory variables:</p>
+        <ul>
+          <li>
+            <strong>Useful for context, limited direct predictive lift:</strong>
+            <span class="body">
+              Macroeconomic variables and Google Trends provide qualitative signals, but measured effects appear delayed
+              and modest. Additionally, these covariates must be forecasted for future periods, adding uncertainty and
+              complexity to the pipeline.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-large">
+        <img src="images/google_trends_and_economic_vars.png"  />
+      </div>
+
+      <!-- Data quality / SKU status -->
+      <div class="bullet-block left-align">
+        <p class="lead">Data quality implications (SKU status):</p>
+        <ul>
+          <li>
+            <strong>Annotation is a forecasting requirement:</strong>
+            <span class="body">
+              Stock-outs and discontinued products can create artificial zeros and structural breaks. Without explicit SKU
+              status annotation, models may misinterpret operational constraints as true demand collapse, biasing forecasts
+              and downstream planning decisions.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-large">
+        <img src="images/active_inactive_sku_example.png"  />
+      </div>
+
+      <!-- Forecast results (placed later, per your requested flow as well) -->
+      <div class="bullet-block left-align">
+        <p class="lead">Forecast results and short-term projections:</p>
+        <ul>
+          <li>
+            <strong>Near-term growth is supported, but uncertainty increases over time:</strong>
+            <span class="body">
+              Forecasts indicate an upward trajectory (≈79k units in Week 9 to &gt;107k units by Week 20). Widening
+              uncertainty bands highlight increasing risk as the horizon extends—supporting frequent updates and
+              continuous monitoring.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-large">
+        <img src="images/predicted_demand_table_chart.png"  />
+      </div>
+
+      <!-- =====================
+           Analytical Implications
+           ===================== -->
+      <h3 class="section-title">Analytical Implications</h3>
+
+      <div class="bullet-block left-align">
+        <ul>
+          <li>
+            <strong>Data quality outweighs model complexity:</strong>
+            <span class="body">
+              Forecast performance is often constrained by annotation, outlier handling, and SKU lifecycle tracking more than
+              by incremental model sophistication.
+            </span>
+          </li>
+          <li>
+            <strong>Segmentation is operationally necessary:</strong>
+            <span class="body">
+              SKU heterogeneity supports product-level or cluster-level forecasting to align replenishment with each SKU’s
+              volatility and seasonality profile.
+            </span>
+          </li>
+          <li>
+            <strong>External signals should be complementary:</strong>
+            <span class="body">
+              Google Trends and macro indicators are best used as contextual inputs with careful lag specification and validation,
+              rather than primary drivers.
+            </span>
+          </li>
+          <li>
+            <strong>Forecasting is a system, not a one-time model:</strong>
+            <span class="body">
+              Effective forecasting requires monitoring, periodic retraining, and governance to remain accurate under changing
+              demand conditions.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <ul class="actions">
+        <li><a href="index.html#portfolio" class="button">← Back to Portfolio</a></li>
+      </ul>
+
+    </div>
+  </article>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
