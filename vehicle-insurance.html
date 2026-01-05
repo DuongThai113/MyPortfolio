@@ -9,12 +9,13 @@
   <style>
     /* Full-width charts (pp1, pp2, pp3, pp4...) */
     .chart-large { margin: 2rem 0; }
-    .chart-large img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 10px;
-    }
+      .chart-large img {
+  width: 55%;          /* ↓ nhỏ hơn 15% */
+  height: auto;
+  display: block;
+  margin: 0 auto;      /* canh giữa */
+  border-radius: 10px;
+}
 
     /* Typography helpers */
     .meta-line { margin-top: 0.25rem; }
@@ -66,8 +67,8 @@
 .project-overview-text {
   text-align: left;        /* canh trái */
   line-height: 1.6;        /* giảm giãn dòng */
-  margin-top: 0.75rem;     /* giảm khoảng cách với tiêu đề */
-  margin-bottom: 0.75rem;  /* giảm khoảng cách dưới */
+  margin-top: 0.5rem;     /* giảm khoảng cách với tiêu đề */
+  margin-bottom: 0.5rem;  /* giảm khoảng cách dưới */
   max-width: 900px;        /* tránh quá dài, giống report */
 }
 
@@ -80,7 +81,8 @@
   <section id="header">
     <header>
       <h1>Vehicle Insurance Data Analysis</h1>
-          </header>
+     
+    </header>
   </section>
 
   <!-- Main -->
@@ -231,4 +233,3 @@
 
 </body>
 </html>
-
