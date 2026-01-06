@@ -1,0 +1,247 @@
+---
+title: "Term Proejct"
+author: "Duong Thai and Shuchi Sharma"
+date: "2025-04-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(glmnet)
+library(nnet)
+library(randomForest)
+library(pROC)
+library(readxl)
+library(caTools)
+library(gbm)
+```
+
+
+```{r cars}
+
+data <- read_excel("E:/Fisher/Term 4/Data mining/Project/Tiger.xlsx", sheet = 2)
+
+# Drop Spending and make Partition a factor
+data$Partition <- as.factor(data$Partition)
+data$Spending <- NULL  # Remove perfect predictor
+
+# Create training (t+v) and test (s) datasets
+train_data <- data %>% filter(Partition %in% c("t", "v")) %>% select(-Partition)
+test_data <- data %>% filter(Partition == "s") %>% select(-Partition)
+
+# Drop sequence_number (ID column)
+train_data <- train_data %>% select(-sequence_number)
+test_data <- test_data %>% select(-sequence_number)
+
+# Set up train control for cross-validation
+ctrl <- trainControl(method = "cv", number = 5, classProbs = TRUE, summaryFunction = twoClassSummary)
+
+# Convert Purchase to factor with levels "Yes" and "No" for caret
+train_data$Purchase <- factor(ifelse(train_data$Purchase == 1, "Yes", "No"), levels = c("No", "Yes"))
+test_data$Purchase <- factor(ifelse(test_data$Purchase == 1, "Yes", "No"), levels = c("No", "Yes"))
+
+```
+
+# Question 1
+```{r pressure, echo=FALSE}
+# Classification Tree
+set.seed(42)
+model_tree_1 <- train(Purchase ~ ., data = train_data, method = "rpart",
+                    trControl = ctrl, metric = "ROC")
+
+# Regularized Logistic Regression
+set.seed(42)
+model_glm_1 <- train(Purchase ~ ., data = train_data, method = "glmnet",
+                   trControl = ctrl, metric = "ROC")
+
+# Neural Network
+set.seed(42)
+model_nnet_1 <- train(Purchase ~ ., data = train_data, method = "nnet",
+                    trControl = ctrl, metric = "ROC", trace = FALSE)
+
+# Ensemble (Gradient Boosting)
+set.seed(42)
+model_gbm_1 <- train(Purchase ~ ., data = train_data, method = "gbm",
+                   trControl = ctrl, metric = "ROC", verbose = FALSE)
+
+```
+
+
+```{r}
+# Evaluate on test data
+models <- list(Tree = model_tree_1, GLM = model_glm_1, NNet = model_nnet_1, GBM = model_gbm_1)
+
+results <- lapply(models, function(mod) {
+  probs <- predict(mod, newdata = test_data, type = "prob")[, "Yes"]
+  preds <- predict(mod, newdata = test_data)
+  auc <- roc(test_data$Purchase, probs)$auc
+  acc <- mean(preds == test_data$Purchase)
+  c(AUC = auc, Accuracy = acc)
+})
+
+results_df <- do.call(rbind, results)
+print(results_df)
+```
+Based on the evaluation results from the test partition, the Gradient Boosting (GBM) model demonstrates the best overall performance among the candidate classification models. Specifically, it achieved the highest AUC score of 0.9231, indicating strong ability in distinguishing purchasers from non-purchasers. Additionally, the GBM model attained the highest classification accuracy at 83.4%, further confirming its superior predictive power on unseen data. Compared to the other models—Logistic Regression (AUC = 0.9084, Accuracy = 81.6%), Neural Network (AUC = 0.8870, Accuracy = 81.4%), and Decision Tree (AUC = 0.8639, Accuracy = 79.0%)—the GBM model consistently outperformed them in both key metrics. Given its strong generalization capability and overall robustness, the GBM model is selected as the final model for predicting customer purchase behavior.
+
+# Question 2
+
+```{r}
+
+data_full <- read_excel("E:/Fisher/Term 4/Data mining/Project/Tiger.xlsx", sheet = 2)
+
+# Filter only purchasers (Purchase == 1)
+purchasers <- data_full %>% filter(Purchase == 1)
+
+# Drop 'Purchase' and 'sequence_number'
+purchasers <- purchasers %>% select(-Purchase, -sequence_number)
+
+# Convert Partition to factor (if needed)
+purchasers$Partition <- as.factor(purchasers$Partition)
+
+# Create training and test sets (t + v and s partitions)
+train_purch <- purchasers %>% filter(Partition %in% c("t", "v")) %>% select(-Partition)
+
+test_purch <- purchasers %>% filter(Partition == "s") %>% select(-Partition)
+
+train_purch <- na.omit(train_purch)
+
+# Set up regression train control
+ctrl_reg <- trainControl(method = "cv", number = 5)
+```
+
+```{r}
+
+# Regularized Linear Regression (Ridge/Lasso)
+set.seed(42)
+model_lm <- train(Spending ~ ., data = train_purch, method = "glmnet",
+                  trControl = ctrl_reg, metric = "RMSE", preProcess = c("center", "scale"))
+
+
+# Regression Tree
+set.seed(42)
+model_tree <- train(Spending ~ ., data = train_purch, method = "rpart",
+                    trControl = ctrl_reg, metric = "RMSE")
+
+# Neural Network
+set.seed(42)
+model_nnet <- train(Spending ~ ., data = train_purch, method = "nnet",
+                    trControl = ctrl_reg, metric = "RMSE", preProcess = c("center", "scale"), trace = FALSE, linout = TRUE)
+
+# Ensemble: Gradient Boosting
+set.seed(42)
+model_gbm <- train(Spending ~ ., data = train_purch, method = "gbm",
+                   trControl = ctrl_reg, metric = "RMSE", verbose = FALSE)
+
+# Evaluate models on test set
+reg_models <- list(Linear = model_lm, Tree = model_tree, NNet = model_nnet, GBM = model_gbm)
+
+reg_results <- lapply(reg_models, function(mod) {
+  preds <- predict(mod, newdata = test_purch)
+  rmse <- sqrt(mean((preds - test_purch$Spending)^2))
+  mae <- mean(abs(preds - test_purch$Spending))
+  c(RMSE = rmse, MAE = mae)
+})
+
+reg_results_df <- do.call(rbind, reg_results)
+print(reg_results_df)
+
+```
+
+Based on the estimated generalization error, the Gradient Boosting Machine (GBM) model is the best choice. It has the lowest Root Mean Squared Error (RMSE) at 153.43 and the lowest Mean Absolute Error (MAE) at 91.78 among all the models evaluated. These metrics indicate that GBM has the highest prediction accuracy and is likely to generalize better to unseen data compared to the Linear, Tree, and Neural Network (NNet) models. Therefore, GBM is the most suitable model for making reliable predictions in this context.
+
+# Question 3
+
+```{r}
+# Copy of the test partition
+score_data <- test_data  
+
+# Score using classification model (GBM): predicted probability of purchase
+score_data$Purchase <- factor(ifelse(score_data$Purchase == 1, "Yes", "No"), levels = c("No", "Yes"))
+score_data$pred_prob_purchase <- predict(model_gbm_1, newdata = score_data, type = "prob")[, "Yes"]
+
+# Score using regression model (GBM): predicted spending
+score_data$pred_spending <- predict(model_gbm, newdata = score_data)  
+
+# Add actual spending
+score_data$actual_spending <- data_full$Spending[data_full$Partition == "s"]
+score_data <- score_data %>%
+  select(pred_prob_purchase, pred_spending, actual_spending, everything())
+
+# Adjust probability of purchase for oversampling
+score_data <- score_data %>%
+  mutate(adjusted_prob = pred_prob_purchase * 0.107)
+
+# Compute expected spending
+score_data <- score_data %>%
+  mutate(expected_spending = adjusted_prob * pred_spending)
+
+# Sort by expected spending
+score_data <- score_data %>%
+  arrange(desc(expected_spending)) %>%
+  mutate(rank = row_number())
+
+# Compute cumulative actual spending and cumulative average spending
+avg_spending_per_cust <- sum(score_data$actual_spending, na.rm = TRUE) / nrow(score_data)
+
+
+score_data <- score_data %>%
+  mutate(cum_actual_spending = cumsum(actual_spending),
+         cum_random_spending = rank * avg_spending_per_cust,
+         lift = cum_actual_spending / cum_random_spending)
+
+# lot the Lift Chart
+ggplot(score_data, aes(x = rank)) +
+  geom_line(aes(y = lift), color = "blue", size = 1.2) +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "gray") +
+  labs(title = "Lift Chart for Targeting Model",
+       x = "Number of Customers Targeted",
+       y = "Cumulative Lift") +
+  theme_minimal()
+
+```
+# Question 4: Gross Profit from Random Selection
+Given:
+180,000 names (prospective customers)
+
+Each catalog costs 2 dollars
+
+Test partition of 500 customers had total spending of 46,951
+
+So, average spending per customer: 46951/500 = 93.902
+
+If we randomly select 180,000 customers, expected revenue: 180000 × 93.902 =16,902,360
+
+Subtract Mailing Costs: Catalog costs: 180000×2=360,000
+
+Estimated Gross Profit (Random): 16,902,360−360,000=16,542,360
+
+If the firm were to randomly select 180,000 prospective customers from the pool, based on the average spending observed in the test data (approximately 93.90 per customer), the expected revenue would be 16,902,360. After accounting for mailing costs of 360,000, the estimated gross profit would be 16,542,360.
+
+# Question 5: Gross Profit Using Model-Based Targeting
+
+From the lift chart, find the lift value at the targeting proportion:
+
+180,000 customers out of a population of 5 million: 180000/5000000 = 0.036 or 3.6%
+
+The test set has 500 rows, so target the top: 500 * 0.036 = 18 customers
+
+From the score_data, get the lift at rank 18:
+```{r}
+score_data$lift[18]
+```
+Multiply lift (5.479076) by random revenue:
+ExpectedRevenue: 
+
+180000 * 93.902 * 5.479076 = 92,609,315
+
+GrossProfit: 92,609,315 − 360,000 = 92,249,315
+
+Comment on the Modeling Effort:
+By using the data mining model to prioritize prospective customers, the firm more than doubles its gross profit compared to random selection. This clearly demonstrates the value of predictive modeling in improving marketing efficiency and maximizing return on investment.
+
